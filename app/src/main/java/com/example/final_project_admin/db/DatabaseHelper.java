@@ -120,15 +120,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
-    public Cursor getClassesByName(String teacherName){
+    public Cursor getClassDetails(int classId) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Define the selection criteria
-        String selection = COLUMN_TEACHER + " LIKE ?";
-        String[] selectionArgs = { "%" + teacherName + "%" };  // Allows partial matching
-
-        // Execute the query
-        return db.query(TABLE_CLASSES, null, selection, selectionArgs, null, null, null);
+        String[] columns = {COLUMN_CLASS_ID, COLUMN_DAY_OF_WEEK, COLUMN_TIME, COLUMN_CAPACITY, COLUMN_DURATION, COLUMN_PRICE, COLUMN_TYPE, COLUMN_TEACHER, COLUMN_DESCRIPTION};
+        String selection = COLUMN_CLASS_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(classId)};
+        return db.query(TABLE_CLASSES, columns, selection, selectionArgs, null, null, null);
     }
 
     // Retrieve all classes

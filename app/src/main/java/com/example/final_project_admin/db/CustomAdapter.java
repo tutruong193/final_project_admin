@@ -81,6 +81,7 @@ package com.example.final_project_admin.db;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +94,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.final_project_admin.ClassDetailsActivity;
 import com.example.final_project_admin.R;
 
 import java.util.ArrayList;
@@ -135,6 +137,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             @Override
             public void onClick(View v) {
                 showDeleteDialog(holder);
+            }
+        });
+        holder.classCard.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    int classId = classIds.get(pos);
+                    Intent intent = new Intent(context, ClassDetailsActivity.class);
+                    intent.putExtra("CLASS_ID", classId);
+                    context.startActivity(intent);
+                }
             }
         });
     }
