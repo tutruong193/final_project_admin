@@ -2,8 +2,11 @@ package com.example.final_project_admin;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.TimePickerDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.final_project_admin.db.DatabaseHelper;
 
 import java.util.Calendar;
+
 public class AddClassActivity extends AppCompatActivity {
     Spinner dayOfWeek, classType;
     EditText description, price, duration, capacity, teacherName;
@@ -29,6 +33,7 @@ public class AddClassActivity extends AppCompatActivity {
     Button addClassBtn, btnBack;
     DatabaseHelper DB;
     private boolean isPickedTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +64,10 @@ public class AddClassActivity extends AppCompatActivity {
         setTypeClass(classType); //done
 //        handle add button
         addClassBtn.setOnClickListener(v -> {
-            if (!validateField(description) || !validateField(capacity) || !validateField(duration) || !validateField(price)) {
+            if (!validateField(capacity) || !validateField(duration) || !validateField(price)  || !validateField(teacherName)) {
                 return;
             }
-            if (!isPickedTime){
+            if (!isPickedTime) {
                 Toast.makeText(this, "Please pick a time!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -75,11 +80,11 @@ public class AddClassActivity extends AppCompatActivity {
             String teacher = teacherName.getText().toString();
             String _description = description.getText().toString();
             boolean checkAddClass = DB.addClass(selectedDay, timeOfCourse, _capacity, _duration, _price, _classType, teacher, _description);
-            if (checkAddClass){
+            if (checkAddClass) {
                 Toast.makeText(this, "Added class successfully!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AddClassActivity.this, HomeActivity.class);
                 startActivity(intent);
-            }else {
+            } else {
                 Toast.makeText(this, "Failed to add class!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -94,7 +99,8 @@ public class AddClassActivity extends AppCompatActivity {
         timeCourse.setOnClickListener(v -> showTimePickerDialog(timeCourse));
 
     }
-    private void textOverFlow(){
+
+    private void textOverFlow() {
         description.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 description.setSingleLine();
@@ -102,6 +108,7 @@ public class AddClassActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showTimePickerDialog(TextView timeEditText) {
         // Get the current time
         Calendar calendar = Calendar.getInstance();
@@ -121,13 +128,15 @@ public class AddClassActivity extends AppCompatActivity {
         // Show the TimePickerDialog
         timePickerDialog.show();
     }
-    private void setTypeClass(Spinner spinner){
+
+    private void setTypeClass(Spinner spinner) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.class_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);//cho loai lop vao select
     }
-    private void showDropdownList(Spinner spinner){
+
+    private void showDropdownList(Spinner spinner) {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.days_of_week, android.R.layout.simple_spinner_item);
@@ -152,8 +161,9 @@ public class AddClassActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean validateField(EditText field){
-        if(field.getText().toString().trim().isEmpty()){
+
+    private boolean validateField(EditText field) {
+        if (field.getText().toString().trim().isEmpty()) {
             field.setError("This field is required!");
             return false;
         }
