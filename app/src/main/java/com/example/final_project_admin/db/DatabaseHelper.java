@@ -113,11 +113,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsUpdated > 0;
     }
 
-    public  boolean deleteClass(int ID){
-        SQLiteDatabase DB = this.getWritableDatabase();
-        long result = DB.delete(TABLE_CLASSES, COLUMN_CLASS_ID + " = ?", new String[]{String.valueOf(ID)});
-        DB.close();
-        return  result > 0;
+    public boolean deleteClass(int classId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(TABLE_CLASSES, COLUMN_CLASS_ID + " = ?", new String[]{String.valueOf(classId)});
+        db.close();
+        return result > 0;
     }
 
     public Cursor getClassesByName(String teacherName){

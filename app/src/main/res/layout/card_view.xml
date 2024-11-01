@@ -7,7 +7,10 @@
     android:layout_margin="16dp"
     app:cardElevation="8dp"
     app:cardCornerRadius="12dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardBackgroundColor="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <!-- Background layout to add padding and style the content area -->
     <LinearLayout
@@ -47,7 +50,7 @@
 
             <!-- Dấu ba chấm -->
             <ImageView
-                android:id="@+id/delete_button"
+                android:id="@+id/deleteBtn"
                 android:layout_width="36dp"
                 android:layout_height="28dp"
                 android:src="@drawable/icon_delete" />

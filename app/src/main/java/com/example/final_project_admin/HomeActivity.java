@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     CustomAdapter adapter;
     DatabaseHelper DB;
     ArrayList<String> teacher, classTime, classType, duration;
+    ArrayList<Integer> classIds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +51,10 @@ public class HomeActivity extends AppCompatActivity {
         classType = new ArrayList<>();
         duration = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
+        classIds = new ArrayList<>();
 
         DB = new DatabaseHelper(HomeActivity.this);
-        adapter = new CustomAdapter(HomeActivity.this, this, teacher, classType, classTime, duration);
+        adapter = new CustomAdapter(HomeActivity.this, this, teacher, classType,classTime, duration, classIds);
 
 
         // set up custom adapter
@@ -79,19 +81,18 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void displayClass(){
+    private void displayClass() {
         Cursor cs = DB.getAllClasses();
-        if (cs.getCount() == 0){
+        if (cs.getCount() == 0) {
             Toast.makeText(this, "No class available!", Toast.LENGTH_SHORT).show();
-        }else{
-            while (cs.moveToNext()){
+        } else {
+            while (cs.moveToNext()) {
+                classIds.add(cs.getInt(0));  // Add class ID
                 teacher.add(cs.getString(7));
                 classType.add(cs.getString(6));
                 classTime.add(cs.getString(2));
                 duration.add(cs.getString(4));
             }
-            Toast.makeText(this, teacher.get(0), Toast.LENGTH_SHORT).show();
-
         }
     }
     private void deleteClass(int position) {
@@ -103,5 +104,14 @@ public class HomeActivity extends AppCompatActivity {
         duration.remove(position);
         adapter.notifyItemRemoved(position);
         Toast.makeText(this, "Lớp đã được xóa", Toast.LENGTH_SHORT).show();
+    }
+    public void refreshData() {
+        classIds.clear();
+        teacher.clear();
+        classType.clear();
+        classTime.clear();
+        duration.clear();
+        displayClass();
+        adapter.notifyDataSetChanged();
     }
 }
