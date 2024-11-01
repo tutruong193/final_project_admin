@@ -54,32 +54,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dayOfWeekLayout"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="8dp">
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="0.3"
-        android:text="Time of course:"
-        android:textSize="18dp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/inputTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:background="@drawable/shape_drawable"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="10dp"
-        android:text="Pick a time" />
-</LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Time of course:"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/inputTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp"
+            android:text="Pick a time" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/capacity"
@@ -195,10 +195,10 @@
 
         <Spinner
             android:id="@+id/typeOfClass"
-            android:spinnerMode="dropdown"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5"
+            android:spinnerMode="dropdown" />
 
     </LinearLayout>
 
@@ -231,36 +231,37 @@
             android:hint="[Optional]"
             android:padding="10dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/teacher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/description"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:padding="8dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Teacher:"
-            android:textSize="18dp"
             android:layout_marginRight="10dp"
-            android:layout_weight="0.3"/>
+            android:layout_weight="0.3"
+            android:text="Teacher:"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/inputTeacher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Input Teacher's name"
-            android:background="@drawable/shape_drawable"
-            android:padding="10dp"
             android:layout_weight="0.5"
-            />
+            android:background="@drawable/shape_drawable"
+            android:hint="Input Teacher's name"
+            android:padding="10dp" />
     </LinearLayout>
+
     <Button
         android:id="@+id/_addClassBtn"
         android:layout_width="wrap_content"
@@ -271,7 +272,16 @@
         android:paddingLeft="35dp"
         android:paddingRight="35dp"
         android:text="Add class" />
-
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:text="Back" />
     <com.google.android.material.chip.ChipGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

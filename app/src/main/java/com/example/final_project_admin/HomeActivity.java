@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // display class into recyclerView
         displayClass();
-
+        refreshData();
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,16 +94,6 @@ public class HomeActivity extends AppCompatActivity {
                 duration.add(cs.getString(4));
             }
         }
-    }
-    private void deleteClass(int position) {
-        // Xóa lớp từ database
-        // Cập nhật danh sách và thông báo adapter để hiển thị lại dữ liệu
-        teacher.remove(position);
-        classType.remove(position);
-        classTime.remove(position);
-        duration.remove(position);
-        adapter.notifyItemRemoved(position);
-        Toast.makeText(this, "Lớp đã được xóa", Toast.LENGTH_SHORT).show();
     }
     public void refreshData() {
         classIds.clear();

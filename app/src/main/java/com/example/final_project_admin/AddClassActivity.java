@@ -26,7 +26,7 @@ public class AddClassActivity extends AppCompatActivity {
     Spinner dayOfWeek, classType;
     EditText description, price, duration, capacity, teacherName;
     TextView timeCourse;
-    Button addClassBtn;
+    Button addClassBtn, btnBack;
     DatabaseHelper DB;
     private boolean isPickedTime;
     @Override
@@ -50,15 +50,13 @@ public class AddClassActivity extends AppCompatActivity {
         description = findViewById(R.id.inputDescription);
         teacherName = findViewById(R.id.inputTeacher);
         isPickedTime = false;
+        btnBack = findViewById(R.id.btnBack);
         DB = new DatabaseHelper(AddClassActivity.this);
 
         // text overflow
         textOverFlow(); // done
         showDropdownList(dayOfWeek); //done
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.class_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        classType.setAdapter(adapter);//cho loai lop vao select
+        setTypeClass(classType); //done
 //        handle add button
         addClassBtn.setOnClickListener(v -> {
             if (!validateField(description) || !validateField(capacity) || !validateField(duration) || !validateField(price)) {
@@ -85,7 +83,12 @@ public class AddClassActivity extends AppCompatActivity {
                 Toast.makeText(this, "Failed to add class!", Toast.LENGTH_SHORT).show();
             }
         });
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         // time picker
 
         timeCourse.setOnClickListener(v -> showTimePickerDialog(timeCourse));
@@ -118,7 +121,12 @@ public class AddClassActivity extends AppCompatActivity {
         // Show the TimePickerDialog
         timePickerDialog.show();
     }
-
+    private void setTypeClass(Spinner spinner){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.class_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);//cho loai lop vao select
+    }
     private void showDropdownList(Spinner spinner){
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,

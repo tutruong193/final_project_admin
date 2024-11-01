@@ -105,11 +105,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TEACHER, teacher);
         values.put(COLUMN_DESCRIPTION, description);
 
-        // Update the row where class_id matches the given ID
         int rowsUpdated = db.update(TABLE_CLASSES, values, COLUMN_CLASS_ID + " = ?", new String[]{String.valueOf(ID)});
         db.close();
 
-        // If at least one row was updated, return true; otherwise, return false
         return rowsUpdated > 0;
     }
 

@@ -1,20 +1,29 @@
 package com.example.final_project_admin;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.final_project_admin.db.DatabaseHelper;
 
-public class ClassDetailsActivity extends AppCompatActivity {
+import java.util.Calendar;
 
-    private EditText etTeacher, etClassType, etClassTime, etDuration, etDayOfWeek, etCapacity, etPrice, etDescription;
+public class ClassDetailsActivity extends AppCompatActivity {
+    private Spinner etClassType,etDayOfWeek ;
+    private TextView etClassTime;
+    private EditText etTeacher, etDuration, etCapacity, etPrice, etDescription;
     private Button btnUpdate, btnBack;
     private DatabaseHelper DB;
     private int classId;
@@ -26,17 +35,19 @@ public class ClassDetailsActivity extends AppCompatActivity {
 
         DB = new DatabaseHelper(this);
 
-        etTeacher = findViewById(R.id.etTeacher);
-        etClassType = findViewById(R.id.etClassType);
-        etClassTime = findViewById(R.id.etClassTime);
-        etDuration = findViewById(R.id.etDuration);
-        etDayOfWeek = findViewById(R.id.etDayOfWeek);
-        etCapacity = findViewById(R.id.etCapacity);
-        etPrice = findViewById(R.id.etPrice);
-        etDescription = findViewById(R.id.etDescription);
+        etTeacher = findViewById(R.id.inputTeacher);
+        etClassType = findViewById(R.id.typeOfClass);
+        etClassTime = findViewById(R.id.inputTime);
+        etDuration = findViewById(R.id.inputDuration);
+        etDayOfWeek = findViewById(R.id.inputDay);
+        etCapacity = findViewById(R.id.inputCapacity);
+        etPrice = findViewById(R.id.inputPrice);
+        etDescription = findViewById(R.id.inputDescription);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnBack = findViewById(R.id.btnBack);
-
+        textOverFlow(); // done
+        showDropdownList(etDayOfWeek);
+        setTypeClass(etClassType);
         Intent intent = getIntent();
         classId = intent.getIntExtra("CLASS_ID", -1);
         if (classId != -1) {
@@ -56,13 +67,14 @@ public class ClassDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        etClassTime.setOnClickListener(v -> showTimePickerDialog(etClassTime));
     }
 
     private void loadClassDetails(int classId) {
         Cursor cursor = DB.getClassDetails(classId);
 
         if (cursor != null && cursor.moveToFirst()) {
-            // Thêm kiểm tra `-1` cho từng cột trước khi lấy giá trị
+            // Thiết lập giá trị cho các EditText và TextView
             int teacherIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_TEACHER);
             if (teacherIndex != -1) {
                 etTeacher.setText(cursor.getString(teacherIndex));
@@ -70,7 +82,8 @@ public class ClassDetailsActivity extends AppCompatActivity {
 
             int classTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_TYPE);
             if (classTypeIndex != -1) {
-                etClassType.setText(cursor.getString(classTypeIndex));
+                String classType = cursor.getString(classTypeIndex);
+                setSpinnerSelection(etClassType, classType);
             }
 
             int classTimeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_TIME);
@@ -85,7 +98,8 @@ public class ClassDetailsActivity extends AppCompatActivity {
 
             int dayOfWeekIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_DAY_OF_WEEK);
             if (dayOfWeekIndex != -1) {
-                etDayOfWeek.setText(cursor.getString(dayOfWeekIndex));
+                String dayOfWeek = cursor.getString(dayOfWeekIndex);
+                setSpinnerSelection(etDayOfWeek, dayOfWeek);
             }
 
             int capacityIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_CAPACITY);
@@ -109,13 +123,26 @@ public class ClassDetailsActivity extends AppCompatActivity {
         }
     }
 
-
+    private void setSpinnerSelection(Spinner spinner, String value) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equals(value)) {
+                spinner.setSelection(i);
+                break;
+            }
+        }
+    }
+    private void setTypeClass(Spinner spinner){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.class_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);//cho loai lop vao select
+    }
     private void updateClass() {
         String teacher = etTeacher.getText().toString();
-        String classType = etClassType.getText().toString();
+        String classType = etClassType.getSelectedItem().toString();
         String classTime = etClassTime.getText().toString();
         int duration = Integer.parseInt(etDuration.getText().toString());
-        String dayOfWeek = etDayOfWeek.getText().toString();
+        String dayOfWeek = etDayOfWeek.getSelectedItem().toString();
         int capacity = Integer.parseInt(etCapacity.getText().toString());
         double price = Double.parseDouble(etPrice.getText().toString());
         String description = etDescription.getText().toString();
@@ -124,9 +151,63 @@ public class ClassDetailsActivity extends AppCompatActivity {
 
         if (isUpdated) {
             Toast.makeText(this, "Class updated successfully", Toast.LENGTH_SHORT).show();
-            finish();
+            Intent intent = new Intent(ClassDetailsActivity.this, HomeActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Failed to update class", Toast.LENGTH_SHORT).show();
         }
     }
+    private void textOverFlow(){
+        etDescription.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                etDescription.setSingleLine();
+                etDescription.setHorizontallyScrolling(true);
+            }
+        });
+    }
+    private void showTimePickerDialog(TextView timeEditText) {
+        // Get the current time
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Initialize the TimePickerDialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                (TimePicker view, int selectedHour, int selectedMinute) -> {
+                    // Format the selected time and set it to EditText
+                    String time = String.format("%02d:%02d", selectedHour, selectedMinute);
+
+                    timeEditText.setText(time);
+                    boolean isPickedTime = true;
+                }, hour, minute, true); // Set true for 24-hour format, false for AM/PM format
+
+        // Show the TimePickerDialog
+        timePickerDialog.show();
+    }
+    private void showDropdownList(Spinner spinner){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.days_of_week, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        // Set a listener to handle selections
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item
+                parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing if nothing is selected
+            }
+        });
+    }
+
 }

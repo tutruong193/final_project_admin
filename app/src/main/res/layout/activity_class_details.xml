@@ -1,71 +1,296 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/white"
+    tools:context=".ClassDetailsActivity">
 
-    <EditText
-        android:id="@+id/etTeacher"
+    <TextView
+        android:id="@+id/tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Teacher" />
+        android:layout_marginTop="30dp"
+        android:text="Create yoga class"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/etClassType"
+    <LinearLayout
+        android:id="@+id/dayOfWeekLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Class Type" />
+        android:layout_below="@+id/tv2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etClassTime"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Day of the week:"
+            android:textSize="18dp" />
+
+        <Spinner
+            android:id="@+id/inputDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:padding="10dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/timeCourse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Class Time" />
+        android:layout_below="@+id/dayOfWeekLayout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etDuration"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Time of course:"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/inputTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp"
+            android:text="Pick a time" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/capacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Duration"
-        android:inputType="number" />
+        android:layout_below="@+id/timeCourse"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etDayOfWeek"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Capacity:"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputCapacity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:hint="Input capacity"
+            android:inputType="number"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Day of Week" />
+        android:layout_below="@+id/capacity"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etCapacity"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Duration:"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:hint="Input duration"
+            android:inputType="number"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Capacity"
-        android:inputType="number" />
+        android:layout_below="@+id/duration"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etPrice"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Price per class:"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:hint="Input price per class"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/classType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Price"
-        android:inputType="numberDecimal" />
+        android:layout_below="@+id/price"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <EditText
-        android:id="@+id/etDescription"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Class type:"
+            android:textSize="18dp" />
+
+        <Spinner
+            android:id="@+id/typeOfClass"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:spinnerMode="dropdown" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description" />
+        android:layout_below="@+id/classType"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Description:"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:hint="[Optional]"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.3"
+            android:text="Teacher:"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputTeacher"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/shape_drawable"
+            android:hint="Input Teacher's name"
+            android:padding="10dp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnUpdate"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="30dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
         android:text="Update" />
 
     <Button
         android:id="@+id/btnBack"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
         android:text="Back" />
 
-</LinearLayout>
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
