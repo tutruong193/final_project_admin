@@ -84,6 +84,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,20 +100,20 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
     private Context context;
     private ArrayList<String> teacher_id, classType_id, classTime_id, duration_id;
-    private ArrayList<Integer> classIds; // Added classIds field
+    private ArrayList<Integer> classIds;
     private Activity activity;
     private DatabaseHelper DB;
 
     public CustomAdapter(Activity activity, Context context, ArrayList<String> teacher_id,
                          ArrayList<String> classType_id, ArrayList<String> classTime_id,
-                         ArrayList<String> duration_id, ArrayList<Integer> classIds) { // Modified constructor
+                         ArrayList<String> duration_id, ArrayList<Integer> classIds) {
         this.activity = activity;
         this.context = context;
         this.teacher_id = teacher_id;
         this.classType_id = classType_id;
         this.classTime_id = classTime_id;
         this.duration_id = duration_id;
-        this.classIds = classIds; // Initialize classIds
+        this.classIds = classIds;
         this.DB = new DatabaseHelper(context);
     }
 
@@ -125,49 +126,38 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        holder.teacher.setText(String.valueOf(teacher_id.get(holder.getAdapterPosition())));
-        holder.classType.setText(String.valueOf(classType_id.get(holder.getAdapterPosition())));
-        holder.classTime.setText(String.valueOf(classTime_id.get(holder.getAdapterPosition())));
-        holder.duration.setText(String.valueOf(duration_id.get(holder.getAdapterPosition())));
+        holder.teacher.setText(String.valueOf(teacher_id.get(position)));
+        holder.classType.setText(String.valueOf(classType_id.get(position)));
+        holder.classTime.setText(String.valueOf(classTime_id.get(position)));
+        holder.duration.setText(String.valueOf(duration_id.get(position)));
 
-        holder.classCard.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    showDeleteDialog(holder);
-                }
-                return true;
+            public void onClick(View v) {
+                showDeleteDialog(holder);
             }
         });
     }
 
     private void showDeleteDialog(final MyViewHolder holder) {
-        final int position = holder.getAdapterPosition();
-        if (position == RecyclerView.NO_POSITION) return;
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Delete Class");
         builder.setMessage("Are you sure you want to delete this class?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                deleteClass(holder);
+                deleteClass(holder.getAdapterPosition());
             }
         });
         builder.setNegativeButton("No", null);
         builder.show();
     }
 
-    private void deleteClass(MyViewHolder holder) {
-        int position = holder.getAdapterPosition();
-        if (position == RecyclerView.NO_POSITION) return;
-
-        if (position >= 0 && position < classIds.size()) {
+    private void deleteClass(int position) {
+        if (position != RecyclerView.NO_POSITION && position < classIds.size()) {
             int classId = classIds.get(position);
 
             if (DB.deleteClass(classId)) {
-                // Remove from ArrayLists
                 classIds.remove(position);
                 teacher_id.remove(position);
                 classType_id.remove(position);
@@ -191,6 +181,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView teacher, classType, classTime, duration;
         CardView classCard;
+        ImageView deleteIcon;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -199,6 +190,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             classType = itemView.findViewById(R.id.classTypetxt);
             duration = itemView.findViewById(R.id.durationtxt);
             classCard = itemView.findViewById(R.id.class_card);
+            deleteIcon = itemView.findViewById(R.id.deleteIcon);
         }
     }
 }

@@ -50,7 +50,7 @@
 
             <!-- Dấu ba chấm -->
             <ImageView
-                android:id="@+id/deleteBtn"
+                android:id="@+id/deleteIcon"
                 android:layout_width="36dp"
                 android:layout_height="28dp"
                 android:src="@drawable/icon_delete" />
