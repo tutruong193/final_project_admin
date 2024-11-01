@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">final_project_admin</string>
+    <string-array name="class_types">
+        <item>Flow Yoga</item>
+        <item>Aerial Yoga</item>
+        <item>Family Yoga</item>
+    </string-array>
+</resources>
