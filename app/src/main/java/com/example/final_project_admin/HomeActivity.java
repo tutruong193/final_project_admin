@@ -23,7 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
-
+    TextView noDataText;
     EditText searchInput;
     TextView searchBtn, addClassBtn;
     RecyclerView recyclerView;
@@ -52,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         duration = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         classIds = new ArrayList<>();
+        noDataText = findViewById(R.id.noDataText);
 
         DB = new DatabaseHelper(HomeActivity.this);
         adapter = new CustomAdapter(HomeActivity.this, this, teacher, classType,classTime, duration, classIds);
@@ -79,13 +80,24 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String teacherName = searchInput.getText().toString();
+                searchClasses(teacherName);
+            }
+        });
     }
 
     private void displayClass() {
         Cursor cs = DB.getAllClasses();
         if (cs.getCount() == 0) {
             Toast.makeText(this, "No class available!", Toast.LENGTH_SHORT).show();
+            noDataText.setVisibility(View.VISIBLE); // Hiển thị thông báo "No data found"
+            recyclerView.setVisibility(View.GONE);
         } else {
+            noDataText.setVisibility(View.GONE); // Ẩn thông báo
+            recyclerView.setVisibility(View.VISIBLE);
             while (cs.moveToNext()) {
                 classIds.add(cs.getInt(0));  // Add class ID
                 teacher.add(cs.getString(7));
@@ -95,6 +107,31 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+    private void searchClasses(String teacherName) {
+        Cursor cs = DB.searchClassesByTeacher(teacherName);
+        classIds.clear();
+        teacher.clear();
+        classType.clear();
+        classTime.clear();
+        duration.clear();
+
+        if (cs.getCount() == 0) {
+            noDataText.setVisibility(View.VISIBLE); // Hiển thị thông báo "No data found"
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            noDataText.setVisibility(View.GONE); // Ẩn thông báo
+            recyclerView.setVisibility(View.VISIBLE);
+            while (cs.moveToNext()) {
+                classIds.add(cs.getInt(0));  // Add class ID
+                teacher.add(cs.getString(7));
+                classType.add(cs.getString(6));
+                classTime.add(cs.getString(2));
+                duration.add(cs.getString(4));
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     public void refreshData() {
         classIds.clear();
         teacher.clear();

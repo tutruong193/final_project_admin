@@ -92,6 +92,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    public Cursor searchClassesByTeacher(String teacherName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + "Classes" + " WHERE " + COLUMN_TEACHER + " LIKE ?", new String[]{"%" + teacherName + "%"});
+    }
 
     public boolean updateClass(int ID, String dayOfWeek, String time, int capacity, int duration, double price, String type, String teacher, String description){
         SQLiteDatabase db = this.getWritableDatabase();
